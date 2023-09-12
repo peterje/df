@@ -1,5 +1,5 @@
 import:
- - ~/.config/alacritty/themes/themes/hyper.yaml
+ - ~/.config/alacritty/theme.yml
 
 window:
   padding:
@@ -10,7 +10,7 @@ window:
   startup_mode: maximized
   option_as_alt: OnlyLeft
 font:
-  size: 42
+  size: 32
   normal:
     family: ProggyClean Nerd Font
 
