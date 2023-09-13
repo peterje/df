@@ -1,4 +1,5 @@
 -- disable netrw at
+vim.g.copilot_node_command = "/Users/peteredm/.nvm/versions/node/v16.14.2/bin/node"
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.mapleader = ' '
@@ -28,6 +29,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
     nested = true,
 })
 require('lazy').setup({
+  'github/copilot.vim',
   'sainnhe/edge',
   'imsnif/kdl.vim',
   'nvim-tree/nvim-tree.lua',
@@ -122,7 +124,6 @@ require('lazy').setup({
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
-
   -- Fuzzy Finder (files, lsp, etc)
   {
     'nvim-telescope/telescope.nvim',
@@ -455,15 +456,6 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
@@ -478,6 +470,8 @@ cmp.setup {
     { name = 'nvim_lsp', trigger_characters = { '-' } },
   },
 }
+
+vim.cmd('colorscheme edge')
 
 
 -- The line beneath this is called `modeline`. See `:help modeline`
