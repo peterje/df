@@ -1,6 +1,7 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
+eval "$(rbenv init - zsh)"
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -12,6 +13,9 @@ fi
 export ZSH="$HOME/.oh-my-zsh"
 # export PATH="/usr/local/anaconda3/bin:$PATH"  # commented out by conda initialize
 export PATH="/Users/peteredm/render/my-vue-app/src/emsdk/upstream/emscripten:$PATH"
+
+# export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/2.3.25/bin:$PATH"
+#export PATH="$HOME/.rbenv/versions/2.7.8/bin:$PATH"
 
 
 # Set name of the theme to load --- if set to "random", it will
@@ -151,8 +155,18 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+# export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
 # Turso
 export PATH="/Users/peteredm/.turso:$PATH"
 alias config='/usr/bin/git --git-dir=/Users/peteredm/.cfg/ --work-tree=/Users/peteredm'
+export PATH="/Users/peteredm/Library/Caches/fnm_multishells/35724_1694541461332/bin":$PATH
+export FNM_MULTISHELL_PATH="/Users/peteredm/Library/Caches/fnm_multishells/35724_1694541461332"
+export FNM_ARCH="arm64"
+export FNM_RESOLVE_ENGINES="false"
+export FNM_COREPACK_ENABLED="false"
+export FNM_VERSION_FILE_STRATEGY="local"
+export FNM_DIR="/Users/peteredm/Library/Application Support/fnm"
+export FNM_NODE_DIST_MIRROR="https://nodejs.org/dist"
+export FNM_LOGLEVEL="info"
+rehash

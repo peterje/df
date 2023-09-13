@@ -12,7 +12,7 @@ window:
 font:
   size: 32
   normal:
-    family: ProggyClean Nerd Font
+    family: FiraMono Nerd Font
 
 bell:
   duration: 0

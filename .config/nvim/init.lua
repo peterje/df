@@ -28,6 +28,8 @@ vim.api.nvim_create_autocmd('BufEnter', {
     nested = true,
 })
 require('lazy').setup({
+  'sainnhe/edge',
+  'imsnif/kdl.vim',
   'nvim-tree/nvim-tree.lua',
   'kyazdani42/nvim-web-devicons',
   'tpope/vim-fugitive',
@@ -218,7 +220,8 @@ require('telescope').setup {
 pcall(require('telescope').load_extension, 'fzf')
 
 -- See `:help telescope.builtin`
-vim.keymap.set('c', '<leader>e', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
+vim.keymap.set('n', '<leader>tj', require('telescope.builtin').jumplist, { desc = 'jumplist' })
+vim.keymap.set('n', '<leader>tr', require('telescope.builtin').lsp_references, { desc = 'references' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>/', function()
@@ -394,6 +397,7 @@ require('nvim-tree').setup({
     git = {
       enable = true
   },
+  view = { adaptive_size = true },
   actions = {
     open_file = {
         quit_on_open = true,
