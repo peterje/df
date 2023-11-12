@@ -1,5 +1,5 @@
 import:
- - ~/.config/alacritty/onedark.yml
+ - ~/.config/alacritty/ghdark.yml
 
 window:
   padding:
@@ -12,8 +12,7 @@ window:
 font:
   size: 32
   normal:
-    family: FiraMono Nerd Font
-
+    family: Liga SFMono Nerd Font 
 bell:
   duration: 0
 

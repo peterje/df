@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "@astrojs/language-server": "^0.28.1",
+    "blitz": "^2.0.0-alpha.62",
+    "create-astro": "^0.14.3",
+    "create-next": "^0.1.4",
+    "create-next-app": "^12.2.2",
+    "create-solid": "^0.2.27",
+    "create-strapi-app": "^4.5.1",
+    "create-vite": "^3.0.0",
+    "create-vite-app": "^1.21.0",
+    "create-vitebook": "^0.100.5",
+    "neovim": "^4.10.1",
+    "tree-sitter-cli": "^0.20.6",
+    "typescript-language-server": "^2.1.0",
+    "vercel": "^28.4.11"
+  }
+}

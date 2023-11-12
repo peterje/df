@@ -24,11 +24,17 @@ vim.g.lazygit_use_neovim_remote = 1 -- fallback to 0 if neovim-remote is not ins
 vim.g.lazygit_use_custom_config_file_path = 0 -- config file path is evaluated if this value is 1
 vim.g.lazygit_config_file_path = '' -- custom config file path
 
-vim.api.nvim_create_autocmd('BufEnter', {
-    command = "if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif",
-    nested = true,
-})
-require('lazy').setup({
+local lazy = require('lazy')
+lazy.setup({
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      { 'williamboman/mason.nvim', config = true },
+      'williamboman/mason-lspconfig.nvim',
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
+      'folke/neodev.nvim',
+    },
+  },
   'github/copilot.vim',
   'sainnhe/edge',
   'imsnif/kdl.vim',
@@ -37,29 +43,37 @@ require('lazy').setup({
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
   'tpope/vim-sleuth',
-  'kdheepak/lazygit.nvim', -- you need to install lazygit first
-  {
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      { 'williamboman/mason.nvim', config = true },
-      'williamboman/mason-lspconfig.nvim',
-      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
-
-      'folke/neodev.nvim',
-    },
-  },
-
+  'kdheepak/lazygit.nvim',
   {
     'hrsh7th/nvim-cmp',
-    dependencies = {
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-nvim-lsp',
-      'rafamadriz/friendly-snippets',
-    },
+    dependencies = { 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-nvim-lsp',
+      'rafamadriz/friendly-snippets' }
   },
+  { 'folke/which-key.nvim' },
+  {
+    'projekt0n/github-nvim-theme',
+    lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require('github-theme').setup({
+        dim_inactive = true,   -- Non focused panes set to alternative background
+        styles = {             -- Style to be applied to different syntax groups
+          comments = 'italic', -- Value is any valid attr-list value `:help attr-list`
+          functions = 'NONE',
+          keywords = 'NONE',
+          variables = 'NONE',
+          conditionals = 'NONE',
+          constants = 'bold',
+          numbers = 'NONE',
+          operators = 'NONE',
+          strings = 'NONE',
+          types = 'NONE',
+        },
+      })
 
-  { 'folke/which-key.nvim',  opts = {} },
+      vim.cmd('colorscheme github_dark_high_contrast')
+    end,
+  },
   {
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -88,27 +102,17 @@ require('lazy').setup({
       end,
     },
   },
-
   {
-    -- Theme inspired by Atom
-    'pineapplegiant/spaceduck',
-    priority = 1000,
-    config = function()
-    end,
-  },
-
-  {
-    -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = true,
-        theme = 'spaceduck',
-        component_separators = '|',
-        section_separators = '',
+    {
+      'nvim-lualine/lualine.nvim',
+      opts = {
+        options = {
+          icons_enabled = true,
+          component_separators = '|',
+          section_separators = '',
+        },
       },
-    },
+    }
   },
 
   {
@@ -153,22 +157,7 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
-
-  -- require 'kickstart.plugins.autoformat',
-  -- require 'kickstart.plugins.debug',
-
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
-  --    up-to-date with whatever is in the kickstart repo.
-  --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  --
-  --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
 }, {})
-
--- [[ Setting options ]]
--- See `:help vim.o`
--- NOTE: You can change these options as you wish!
 
 vim.o.hlsearch = false                          -- Set highlight on search
 vim.wo.number = true                            -- Make line numbers default
@@ -248,14 +237,7 @@ local nt = require('nvim-tree.api')
 vim.keymap.set('n', '<leader>ee', nt.tree.open, { desc = 'open explorer' })
 vim.keymap.set('n', '<leader>ec', nt.tree.close, { desc = 'close explorer' })
 
-
-vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]resume' })
+require('core.keybinds')
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -395,13 +377,13 @@ local servers = {
 -- Setup neovim lua configuration
 require('neodev').setup()
 require('nvim-tree').setup({
-    git = {
-      enable = true
+  git = {
+    enable = true
   },
   view = { adaptive_size = true },
   actions = {
     open_file = {
-        quit_on_open = true,
+      quit_on_open = true,
     }
   },
   disable_netrw = true,
@@ -417,7 +399,6 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
-
 mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
@@ -471,7 +452,6 @@ cmp.setup {
   },
 }
 
-vim.cmd('colorscheme edge')
 
 
 -- The line beneath this is called `modeline`. See `:help modeline`
