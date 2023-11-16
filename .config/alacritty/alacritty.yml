@@ -6,7 +6,7 @@ window:
     x: 0
     y: 0
   decorations: none
-  opacity: 1.0
+  opacity: 1
   startup_mode: maximized
   option_as_alt: OnlyLeft
 font:

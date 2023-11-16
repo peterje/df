@@ -1,5 +1,5 @@
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
-keybinds {
+keybinds clear-defaults=true {
     normal {
         // uncomment this and adjust key if using copy_on_select=false
         // bind "Alt c" { Copy; }
@@ -25,8 +25,8 @@ keybinds {
         bind "h" "Left" { MoveFocus "Left"; }
         bind "l" "Right" { MoveFocus "Right"; }
         bind "j" "Down" { MoveFocus "Down"; }
-        bind "k" "Up" { MoveFocus "Up"; }
-        bind "p" { SwitchFocus; }
+	bind "k" "Up" { MoveFocus "Up"; }
+	bind "p" { SwitchFocus; }
         bind "n" { NewPane; SwitchToMode "Normal"; }
         bind "d" { NewPane "Down"; SwitchToMode "Normal"; }
         bind "r" { NewPane "Right"; SwitchToMode "Normal"; }
@@ -216,7 +216,7 @@ themes {
         fg "#f0f3f6"
         bg "#f0f3f6"
         red "#ff9492"
-        green "#26cd4d"
+        green "#d9dee3"
         yellow "#f0b72f"
         blue "#71b7ff"
         magenta "#cb9eff"
