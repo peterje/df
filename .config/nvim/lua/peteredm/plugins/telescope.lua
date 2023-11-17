@@ -66,8 +66,8 @@ return {
         },
       }
       telescope.load_extension 'fzf'
+      telescope.load_extension 'git_worktree'
       telescope.load_extension 'file_browser'
-      require('telescope.builtin').find_files()
     end,
     keys = {
       {
@@ -76,8 +76,7 @@ return {
           local function telescope_buffer_dir()
             return vim.fn.expand '%:p:h'
           end
-
-          telescope.extensions.file_browser.file_browser {
+          require('telescope').extensions.file_browser.file_browser {
             path = '%:p:h',
             cwd = telescope_buffer_dir(),
             respect_gitignore = false,

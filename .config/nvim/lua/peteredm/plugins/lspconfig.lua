@@ -28,7 +28,7 @@ return {
 
     local keymap = vim.keymap -- for conciseness
     local opts = { noremap = true, silent = true }
-    local on_attach = function(client, bufnr)
+    local on_attach = function(_, bufnr)
       opts.buffer = bufnr
     end
     -- set keybinds
@@ -86,14 +86,62 @@ return {
       ensure_installed = vim.tbl_keys(servers),
     }
 
+    local nvim_lsp = require 'lspconfig'
+    -- Custom root directory function
+    local function project_root_dir(fname)
+      local util = nvim_lsp.util
+      local root_files = {
+        'deno.json', -- Deno project
+        'deno.jsonc', -- Deno project (JSON with comments)
+        'import_map.json', -- Deno project
+        'package.json', -- Node.js project
+      }
+
+      local root = util.root_pattern(unpack(root_files))(fname)
+
+      if
+        root
+        and (
+          util.path.exists(util.path.join(root, 'deno.json'))
+          or util.path.exists(util.path.join(root, 'deno.jsonc'))
+          or util.path.exists(util.path.join(root, 'import_map.json'))
+        )
+      then
+        return root, 'denols'
+      elseif root and util.path.exists(util.path.join(root, 'package.json')) then
+        return root, 'tsserver'
+      end
+
+      return nil
+    end
+
     mason_lspconfig.setup_handlers {
       function(server_name)
-        require('lspconfig')[server_name].setup {
-          capabilities = capabilities,
-          on_attach = on_attach,
-          settings = servers[server_name],
-          filetypes = (servers[server_name] or {}).filetypes,
-        }
+        if server_name == 'tsserver' or server_name == 'denols' then
+          local lsp_setup = {
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = servers[server_name],
+            filetypes = (servers[server_name] or {}).filetypes,
+            root_dir = function(fname)
+              local root, lsp_type = project_root_dir(fname)
+              if server_name == lsp_type then
+                return root
+              end
+            end,
+          }
+          if server_name == 'tsserver' then
+            lsp_setup.single_file_support = false
+          end
+          require('lspconfig')[server_name].setup(lsp_setup)
+        else
+          require('lspconfig')[server_name].setup {
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = servers[server_name],
+            filetypes = (servers[server_name] or {}).filetypes,
+          }
+        end
       end,
     }
   end,
